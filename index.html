@@ -1,0 +1,1659 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>OTTO — L'employé IA de chaque indépendant</title>
+<meta name="description" content="OTTO est un employé IA conversationnel pour les indépendants. Tu parles, OTTO fait : devis, factures, relances, suivi client. 14,99€/mois." />
+<meta name="theme-color" content="#0a0b10" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='44' fill='%23ff7849'/><text x='50' y='66' text-anchor='middle' font-family='Inter, sans-serif' font-weight='900' font-size='56' fill='white'>O</text></svg>">
+<style>
+  :root{
+    --bg:#0a0b10;
+    --bg-2:#0f1118;
+    --surface:#14171f;
+    --surface-2:#1b1f2a;
+    --line:rgba(255,255,255,.07);
+    --line-strong:rgba(255,255,255,.14);
+    --text:#f3f4f7;
+    --muted:#9aa0ab;
+    --muted-2:#6b6f7a;
+    --accent:#ff7849;
+    --accent-2:#ffb347;
+    --accent-3:#ff3c83;
+    --accent-soft:rgba(255,120,73,.14);
+    --grad: linear-gradient(135deg,#ff7849 0%, #ff5b8a 55%, #b762ff 100%);
+    --grad-soft: linear-gradient(135deg,rgba(255,120,73,.18), rgba(183,98,255,.12));
+    --r:18px;
+    --r-sm:12px;
+    --shadow: 0 30px 80px -30px rgba(255,120,73,.35), 0 1px 0 rgba(255,255,255,.04) inset;
+    --maxw: 1180px;
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter', system-ui, -apple-system, sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+    line-height:1.55;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;
+    background:
+      radial-gradient(900px 500px at 80% -10%, rgba(255,120,73,.18), transparent 60%),
+      radial-gradient(700px 400px at -10% 30%, rgba(183,98,255,.13), transparent 60%),
+      radial-gradient(800px 600px at 50% 110%, rgba(255,60,131,.10), transparent 60%);
+    z-index:-1; pointer-events:none;
+  }
+
+  a{color:inherit; text-decoration:none}
+  button{font-family:inherit; cursor:pointer; border:0; background:none; color:inherit}
+  img,svg{display:block; max-width:100%}
+
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px}
+  .serif{font-family:'Instrument Serif', serif; font-weight:400; letter-spacing:-.01em}
+  .accent-grad{
+    background:var(--grad);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; color:transparent;
+  }
+
+  /* ====== NAV ====== */
+  nav.top{
+    position:sticky; top:0; z-index:60;
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    background:rgba(10,11,16,.65);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{display:flex; align-items:center; justify-content:space-between; padding:14px 24px; max-width:var(--maxw); margin:0 auto}
+  .brand{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:-.02em; font-size:18px}
+  .brand-mark{
+    width:30px;height:30px;border-radius:9px; display:grid;place-items:center;
+    background:var(--grad); color:white; font-weight:900; font-size:16px;
+    box-shadow:0 8px 24px -10px rgba(255,120,73,.55);
+  }
+  .nav-links{display:flex; gap:28px; align-items:center}
+  .nav-links a{color:var(--muted); font-size:14px; font-weight:500; transition:color .2s}
+  .nav-links a:hover{color:var(--text)}
+  .nav-cta{display:flex; gap:10px; align-items:center}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:11px 18px; border-radius:999px;
+    font-size:14px; font-weight:600;
+    transition:transform .15s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
+    white-space:nowrap;
+  }
+  .btn-ghost{ background:transparent; color:var(--text); border:1px solid var(--line-strong) }
+  .btn-ghost:hover{ border-color:rgba(255,255,255,.3) }
+  .btn-primary{
+    background:var(--grad); color:white;
+    box-shadow:0 14px 40px -14px rgba(255,120,73,.6);
+  }
+  .btn-primary:hover{ transform:translateY(-1px); box-shadow:0 20px 50px -14px rgba(255,120,73,.8) }
+  .btn-lg{padding:15px 24px; font-size:15px}
+  .menu-toggle{display:none}
+
+  /* ====== HERO ====== */
+  .hero{ position:relative; padding:88px 0 72px; overflow:hidden }
+  .hero-grid{
+    display:grid; grid-template-columns: 1.05fr 1fr; gap:68px; align-items:center;
+  }
+  .pill{
+    display:inline-flex; align-items:center; gap:10px;
+    padding:8px 14px; border-radius:999px;
+    background:rgba(255,255,255,.04); border:1px solid var(--line-strong);
+    font-size:13px; color:var(--muted); font-weight:500;
+  }
+  .pill .dot{
+    width:8px;height:8px;border-radius:50%; background:#46d27a;
+    box-shadow:0 0 0 4px rgba(70,210,122,.18);
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+
+  h1.hero-title{
+    font-size:clamp(44px, 6vw, 76px);
+    font-weight:300;
+    line-height:1.02;
+    letter-spacing:-.035em;
+    margin:22px 0 22px;
+  }
+  h1.hero-title .b{font-weight:700}
+  h1.hero-title em{font-style:italic; font-family:'Instrument Serif', serif; font-weight:400}
+
+  .hero-sub{
+    font-size:19px; color:var(--muted); max-width:540px; line-height:1.6; margin-bottom:32px;
+  }
+  .hero-ctas{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
+  .hero-meta{
+    margin-top:38px; display:flex; gap:28px; flex-wrap:wrap;
+    color:var(--muted); font-size:13.5px;
+  }
+  .hero-meta b{color:var(--text); font-weight:600}
+
+  /* ====== PHONE MOCKUP ====== */
+  .phone-wrap{ position:relative; perspective:1400px; }
+  .phone{
+    position:relative; width:100%; max-width:380px; margin:0 auto;
+    background:linear-gradient(180deg,#1c1f2b,#0e1018);
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:42px; padding:14px 12px 20px;
+    box-shadow:
+      0 60px 120px -30px rgba(0,0,0,.7),
+      0 30px 60px -20px rgba(255,120,73,.25),
+      inset 0 1px 0 rgba(255,255,255,.06);
+    transform: rotateY(-8deg) rotateX(4deg);
+    transition: transform .6s ease;
+  }
+  .phone:hover{ transform: rotateY(-3deg) rotateX(2deg) }
+  .phone::before{
+    content:""; position:absolute; top:14px; left:50%; transform:translateX(-50%);
+    width:96px; height:24px; background:#0a0b10; border-radius:14px;
+  }
+  .phone-screen{
+    background:linear-gradient(180deg,#0d0f17,#0f1320);
+    border-radius:30px;
+    padding:42px 14px 16px;
+    height:620px;
+    overflow:hidden;
+    position:relative;
+  }
+  .chat-header{
+    display:flex; align-items:center; gap:10px;
+    padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,.06);
+    margin-bottom:14px;
+  }
+  .chat-header .avatar{
+    width:36px;height:36px;border-radius:50%;
+    background:var(--grad); display:grid; place-items:center;
+    color:white; font-weight:800; font-size:15px;
+    box-shadow:0 8px 18px -6px rgba(255,120,73,.6);
+  }
+  .chat-header .meta{flex:1}
+  .chat-header .meta .name{font-size:14px; font-weight:600}
+  .chat-header .meta .status{font-size:11px; color:#46d27a; display:flex; align-items:center; gap:5px}
+  .chat-header .meta .status::before{content:""; width:6px;height:6px;border-radius:50%; background:#46d27a}
+
+  .chat-stream{
+    display:flex; flex-direction:column; gap:10px;
+    overflow-y:auto; height:calc(100% - 64px);
+    padding-right:4px;
+  }
+  .chat-stream::-webkit-scrollbar{width:0}
+  .bubble{
+    max-width:84%; padding:10px 14px; border-radius:16px;
+    font-size:13.5px; line-height:1.45;
+    animation:fadeUp .4s ease both;
+  }
+  @keyframes fadeUp{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:translateY(0)}}
+  .bubble.me{
+    align-self:flex-end; background:var(--grad); color:white;
+    border-bottom-right-radius:4px;
+    box-shadow:0 6px 18px -6px rgba(255,91,138,.5);
+  }
+  .bubble.otto{
+    align-self:flex-start; background:rgba(255,255,255,.05);
+    border:1px solid var(--line); color:var(--text);
+    border-bottom-left-radius:4px;
+  }
+  .bubble.voice{
+    display:flex; align-items:center; gap:10px;
+    background:var(--grad); color:white; padding:10px 14px;
+    align-self:flex-end; border-bottom-right-radius:4px;
+  }
+  .voice-bars{display:flex; gap:2px; align-items:center; flex:1}
+  .voice-bars span{width:2px; background:rgba(255,255,255,.85); border-radius:2px}
+  .voice-time{font-size:11px; opacity:.85}
+  .doc-card{
+    background:rgba(255,255,255,.04); border:1px solid var(--line-strong);
+    border-radius:12px; padding:10px 12px; display:flex; align-items:center; gap:10px;
+  }
+  .doc-icon{
+    width:32px;height:38px;border-radius:6px;
+    background:linear-gradient(135deg,#ff7849,#ff3c83);
+    display:grid;place-items:center; color:white; font-weight:800; font-size:10px;
+    flex-shrink:0;
+  }
+  .doc-card .info{flex:1}
+  .doc-card .info .t{font-size:12.5px; font-weight:600}
+  .doc-card .info .s{font-size:11px; color:var(--muted)}
+
+  .typing{
+    align-self:flex-start; background:rgba(255,255,255,.05);
+    padding:10px 14px; border-radius:16px; border-bottom-left-radius:4px;
+    display:flex; gap:4px; align-items:center;
+  }
+  .typing span{
+    width:6px;height:6px;border-radius:50%; background:var(--muted);
+    animation:typingBounce 1.2s infinite ease-in-out;
+  }
+  .typing span:nth-child(2){animation-delay:.15s}
+  .typing span:nth-child(3){animation-delay:.3s}
+  @keyframes typingBounce{0%,80%,100%{transform:scale(.6); opacity:.4} 40%{transform:scale(1); opacity:1}}
+
+  /* Floating tags around phone */
+  .float-tag{
+    position:absolute; padding:10px 14px; border-radius:14px;
+    background:rgba(20,23,31,.85); backdrop-filter:blur(10px);
+    border:1px solid var(--line-strong);
+    font-size:12.5px; color:var(--text); font-weight:500;
+    display:flex; align-items:center; gap:8px;
+    box-shadow:0 20px 40px -20px rgba(0,0,0,.6);
+  }
+  .float-tag .ico{
+    width:24px;height:24px;border-radius:7px; display:grid;place-items:center;
+    font-size:13px;
+  }
+  .float-tag.t1{top:8%; left:-4%; animation: float 6s ease-in-out infinite}
+  .float-tag.t2{bottom:18%; right:-6%; animation: float 7s ease-in-out infinite reverse}
+  .float-tag.t3{top:50%; left:-12%; animation: float 8s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)}}
+  @media (max-width:980px){ .float-tag{display:none} }
+
+  /* ====== STAT BAR ====== */
+  .statsbar{
+    margin-top:64px;
+    display:grid; grid-template-columns:repeat(4,1fr); gap:0;
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    background:rgba(255,255,255,.015);
+  }
+  .statsbar .stat{
+    padding:28px 22px; border-right:1px solid var(--line);
+  }
+  .statsbar .stat:last-child{border-right:0}
+  .statsbar .num{ font-family:'Instrument Serif', serif; font-size:42px; font-weight:400; letter-spacing:-.02em }
+  .statsbar .lbl{ font-size:13px; color:var(--muted); margin-top:4px }
+  @media (max-width:760px){ .statsbar{grid-template-columns:repeat(2,1fr)} .statsbar .stat:nth-child(2){border-right:0} }
+
+  /* ====== SECTIONS ====== */
+  section.s{ padding:120px 0; position:relative }
+  section.s.compact{ padding:80px 0 }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:12px; font-weight:600; letter-spacing:.14em;
+    color:var(--accent); text-transform:uppercase;
+  }
+  .eyebrow::before{
+    content:""; width:24px;height:1px; background:var(--accent);
+  }
+  h2.section-title{
+    font-size:clamp(34px, 4.4vw, 56px);
+    font-weight:300; letter-spacing:-.03em; line-height:1.05;
+    margin:14px 0 18px; max-width:780px;
+  }
+  h2.section-title .b{font-weight:700}
+  h2.section-title em{font-family:'Instrument Serif', serif; font-style:italic; font-weight:400}
+  .section-lead{font-size:18px; color:var(--muted); max-width:680px; line-height:1.65}
+
+  /* ====== PROBLEM ====== */
+  .problem-grid{
+    display:grid; grid-template-columns:1fr 1.1fr; gap:60px; margin-top:64px; align-items:start;
+  }
+  .losses-table{
+    border:1px solid var(--line); border-radius:var(--r); overflow:hidden;
+    background:rgba(255,255,255,.015);
+  }
+  .losses-table .row{
+    display:grid; grid-template-columns: 1.4fr .8fr 1.2fr;
+    padding:18px 20px;
+    border-bottom:1px solid var(--line);
+    align-items:center;
+  }
+  .losses-table .row:last-child{border-bottom:0}
+  .losses-table .row.head{
+    background:rgba(255,255,255,.02);
+    font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.1em; font-weight:600;
+  }
+  .losses-table .task{font-weight:600; font-size:15px}
+  .losses-table .time{
+    display:inline-block; padding:4px 10px; border-radius:999px;
+    background:rgba(255,120,73,.12); color:var(--accent); font-size:13px; font-weight:600;
+  }
+  .losses-table .impact{font-size:13.5px; color:var(--muted)}
+  .losses-table .row.total{
+    background:linear-gradient(90deg, rgba(255,120,73,.08), transparent);
+    font-weight:700;
+  }
+  .losses-table .row.total .task{color:var(--text); font-size:16px}
+  .losses-table .row.total .time{background:var(--accent); color:white}
+  .losses-table .row.total .impact{color:var(--text); font-weight:600}
+
+  .problem-callout{
+    background:linear-gradient(135deg, rgba(255,120,73,.08), rgba(183,98,255,.06));
+    border:1px solid rgba(255,120,73,.15);
+    border-radius:var(--r); padding:32px;
+    margin-top:32px;
+  }
+  .problem-callout .big{ font-family:'Instrument Serif', serif; font-size:54px; font-weight:400; letter-spacing:-.02em; line-height:1 }
+  .problem-callout .desc{margin-top:8px; font-size:15px; color:var(--muted)}
+
+  /* ====== HOW IT WORKS / SOLUTION ====== */
+  .steps{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:64px;
+  }
+  .step{
+    position:relative; padding:28px 24px;
+    border:1px solid var(--line); border-radius:var(--r);
+    background:rgba(255,255,255,.02);
+    transition: transform .25s ease, border-color .25s ease, background .25s ease;
+  }
+  .step:hover{ transform: translateY(-4px); border-color:var(--line-strong); background:rgba(255,255,255,.035) }
+  .step .num{
+    font-family:'Instrument Serif', serif;
+    font-size:48px; line-height:1;
+    background: var(--grad);
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+    margin-bottom:14px;
+  }
+  .step h3{font-size:18px; font-weight:700; letter-spacing:-.01em; margin:0 0 8px}
+  .step p{margin:0; color:var(--muted); font-size:14.5px; line-height:1.6}
+  .step .preview{
+    margin-top:18px; padding:12px 14px;
+    background:rgba(0,0,0,.35); border:1px solid var(--line);
+    border-radius:10px; font-size:12.5px; color:var(--muted);
+    font-family: ui-monospace, "SF Mono", monospace;
+  }
+  .step .preview .you{ color:var(--accent); font-weight:600 }
+
+  /* ====== FEATURES ====== */
+  .features{
+    display:grid; grid-template-columns:repeat(2,1fr); gap:18px; margin-top:64px;
+  }
+  .feat{
+    padding:32px; border-radius:var(--r);
+    background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
+    border:1px solid var(--line);
+    position:relative; overflow:hidden;
+    transition: transform .25s ease;
+  }
+  .feat:hover{transform: translateY(-3px)}
+  .feat::after{
+    content:""; position:absolute; top:0; right:0; width:200px; height:200px;
+    background:radial-gradient(circle at top right, var(--accent-soft), transparent 60%);
+    pointer-events:none;
+  }
+  .feat .icon{
+    width:48px; height:48px; border-radius:12px;
+    display:grid; place-items:center;
+    background:linear-gradient(135deg, rgba(255,120,73,.18), rgba(255,60,131,.12));
+    border:1px solid rgba(255,120,73,.2);
+    margin-bottom:18px; font-size:22px;
+  }
+  .feat h3{font-size:22px; font-weight:700; letter-spacing:-.02em; margin:0 0 14px}
+  .feat ul{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px }
+  .feat li{ display:flex; gap:10px; font-size:14.5px; color:var(--muted) }
+  .feat li::before{
+    content:""; width:6px; height:6px; border-radius:50%;
+    background:var(--accent); margin-top:9px; flex-shrink:0;
+  }
+
+  /* ====== LIVE DEMO ====== */
+  .demo-shell{
+    margin-top:60px;
+    border:1px solid var(--line);
+    border-radius:24px;
+    background: linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,.005));
+    overflow:hidden;
+    box-shadow: 0 40px 100px -40px rgba(0,0,0,.6);
+  }
+  .demo-tabs{
+    display:flex; border-bottom:1px solid var(--line); padding:8px;
+    gap:4px; overflow-x:auto;
+  }
+  .demo-tab{
+    padding:10px 16px; border-radius:10px;
+    font-size:13.5px; font-weight:500; color:var(--muted);
+    transition: background .2s, color .2s;
+    white-space:nowrap;
+  }
+  .demo-tab:hover{color:var(--text); background:rgba(255,255,255,.03)}
+  .demo-tab.active{background:rgba(255,255,255,.06); color:var(--text)}
+
+  .demo-body{ padding:0; display:grid; grid-template-columns: 1fr 380px; gap:0 }
+  .demo-chat{
+    padding:24px 28px;
+    height:560px;
+    display:flex; flex-direction:column; gap:14px;
+    overflow-y:auto;
+    border-right:1px solid var(--line);
+  }
+  .demo-chat::-webkit-scrollbar{width:6px}
+  .demo-chat::-webkit-scrollbar-thumb{background:var(--line-strong); border-radius:6px}
+
+  .d-bubble{
+    max-width:78%; padding:14px 18px; border-radius:18px;
+    font-size:14.5px; line-height:1.5;
+    animation: fadeUp .4s ease both;
+  }
+  .d-bubble.me{ align-self:flex-end; background:var(--grad); color:white; border-bottom-right-radius:6px }
+  .d-bubble.otto{ align-self:flex-start; background:rgba(255,255,255,.05); border:1px solid var(--line); border-bottom-left-radius:6px }
+  .d-bubble small{display:block; font-size:11px; margin-top:8px; opacity:.65}
+
+  .demo-side{
+    padding:24px;
+    background:rgba(0,0,0,.2);
+  }
+  .demo-side h4{ margin:0 0 14px; font-size:13px; text-transform:uppercase; letter-spacing:.15em; color:var(--muted); font-weight:600 }
+  .scenario-list{ display:flex; flex-direction:column; gap:8px; margin-bottom:24px}
+  .scenario{
+    padding:14px 14px; border-radius:12px; border:1px solid var(--line);
+    background:rgba(255,255,255,.02);
+    cursor:pointer; transition:all .2s ease;
+    text-align:left; width:100%;
+    display:flex; gap:12px; align-items:flex-start;
+  }
+  .scenario:hover{ border-color:var(--accent); background:rgba(255,120,73,.06) }
+  .scenario.active{ border-color:var(--accent); background:rgba(255,120,73,.08) }
+  .scenario .ico{
+    width:32px;height:32px;border-radius:9px; flex-shrink:0;
+    background:linear-gradient(135deg, rgba(255,120,73,.2), rgba(255,60,131,.12));
+    display:grid; place-items:center;
+  }
+  .scenario .t{font-size:14px; font-weight:600; line-height:1.3}
+  .scenario .s{font-size:12px; color:var(--muted); margin-top:3px; line-height:1.4}
+  .demo-controls{display:flex; gap:8px; margin-top:6px}
+  .demo-controls button{
+    padding:10px 12px; border-radius:10px; font-size:12.5px; font-weight:500;
+    background:rgba(255,255,255,.04); border:1px solid var(--line); color:var(--muted);
+    transition:all .2s;
+  }
+  .demo-controls button:hover{ color:var(--text); border-color:var(--line-strong) }
+  .demo-controls .replay{flex:1; background:var(--grad); color:white; border-color:transparent; font-weight:600}
+
+  @media (max-width:960px){
+    .demo-body{ grid-template-columns:1fr }
+    .demo-chat{ height:460px; border-right:0; border-bottom:1px solid var(--line) }
+  }
+
+  /* ====== COMPARISON ====== */
+  .compare{
+    margin-top:60px; border:1px solid var(--line); border-radius:var(--r); overflow:hidden;
+    background:rgba(255,255,255,.02);
+  }
+  .compare table{ width:100%; border-collapse:collapse }
+  .compare th, .compare td{
+    padding:18px 16px; text-align:center; border-bottom:1px solid var(--line);
+    font-size:14px;
+  }
+  .compare th{ background:rgba(255,255,255,.025); font-weight:600; color:var(--muted); text-transform:uppercase; font-size:11.5px; letter-spacing:.12em }
+  .compare th:first-child, .compare td:first-child{ text-align:left; font-weight:600 }
+  .compare tr:last-child td{border-bottom:0}
+  .compare tr.otto-row{
+    background:linear-gradient(90deg, rgba(255,120,73,.10), rgba(183,98,255,.06));
+    font-weight:700;
+  }
+  .compare tr.otto-row td:first-child{
+    color:var(--accent); display:flex; align-items:center; gap:8px;
+  }
+  .check{ color:#46d27a; font-weight:700 }
+  .cross{ color:#5a5e6a }
+  .badge-natif{
+    display:inline-block; padding:3px 10px; border-radius:999px;
+    background:var(--grad); color:white; font-size:11px; font-weight:700; letter-spacing:.05em;
+  }
+  @media (max-width:680px){
+    .compare{font-size:12px}
+    .compare th, .compare td{padding:12px 8px}
+  }
+
+  /* ====== PRICING ====== */
+  .pricing{
+    margin-top:60px;
+    display:grid; grid-template-columns:1fr 1fr; gap:18px;
+  }
+  .price-card{
+    padding:36px 32px;
+    border-radius:var(--r);
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.02);
+    position:relative;
+    overflow:hidden;
+  }
+  .price-card.feat-card{
+    background:
+      radial-gradient(600px 300px at top right, rgba(255,120,73,.18), transparent 60%),
+      linear-gradient(180deg, rgba(255,120,73,.05), rgba(183,98,255,.04));
+    border-color:rgba(255,120,73,.3);
+    box-shadow:0 30px 60px -30px rgba(255,120,73,.4);
+  }
+  .price-card .tag{
+    display:inline-block; padding:5px 12px; border-radius:999px;
+    background:var(--grad); color:white; font-size:11px; font-weight:700; letter-spacing:.08em;
+    margin-bottom:18px;
+  }
+  .price-card .name{font-size:14px; color:var(--muted); text-transform:uppercase; letter-spacing:.12em; font-weight:600; margin-bottom:14px}
+  .price-card .amount{ font-family:'Instrument Serif', serif; font-size:78px; line-height:1; letter-spacing:-.03em; margin-bottom:6px}
+  .price-card .amount sup{font-size:32px; vertical-align:top; margin-left:2px}
+  .price-card .per{ color:var(--muted); font-size:15px; margin-bottom:24px }
+  .price-card ul{ list-style:none; padding:0; margin:0 0 32px; display:flex; flex-direction:column; gap:10px }
+  .price-card li{ display:flex; gap:10px; font-size:14.5px; }
+  .price-card li::before{ content:"✓"; color:var(--accent); font-weight:700; flex-shrink:0; width:18px }
+  .price-card .btn{width:100%; justify-content:center}
+
+  /* ====== ROADMAP ====== */
+  .roadmap{ margin-top:60px; display:grid; grid-template-columns:repeat(4,1fr); gap:18px }
+  .road-card{
+    padding:28px 24px; border-radius:var(--r);
+    border:1px solid var(--line); background:rgba(255,255,255,.02);
+    position:relative;
+  }
+  .road-card .ver{ font-family:'Instrument Serif', serif; font-size:36px; line-height:1; letter-spacing:-.02em; margin-bottom:6px }
+  .road-card .when{font-size:12px; color:var(--accent); text-transform:uppercase; letter-spacing:.1em; font-weight:600; margin-bottom:8px}
+  .road-card h4{ font-size:18px; font-weight:700; letter-spacing:-.02em; margin:0 0 14px }
+  .road-card ul{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px }
+  .road-card li{ font-size:13.5px; color:var(--muted); padding-left:14px; position:relative; line-height:1.5 }
+  .road-card li::before{ content:""; position:absolute; left:0; top:8px; width:6px; height:6px; border-radius:50%; background:var(--accent) }
+  .road-card.now{
+    background: linear-gradient(180deg, rgba(255,120,73,.10), rgba(255,255,255,.02));
+    border-color: rgba(255,120,73,.3);
+  }
+  .road-card.now::after{
+    content:"En cours"; position:absolute; top:14px; right:14px;
+    padding:3px 8px; border-radius:999px; background:var(--accent); color:white;
+    font-size:10px; font-weight:700; letter-spacing:.05em;
+  }
+
+  /* ====== EXIT / ACQUIRERS ====== */
+  .exit-grid{
+    margin-top:50px; display:grid; grid-template-columns:repeat(5,1fr); gap:14px;
+  }
+  .acq{
+    padding:24px 18px; border-radius:14px;
+    border:1px solid var(--line); background:rgba(255,255,255,.02);
+    text-align:center;
+    transition: transform .2s, border-color .2s;
+  }
+  .acq:hover{transform:translateY(-3px); border-color:var(--line-strong)}
+  .acq .nm{font-size:16px; font-weight:700; margin-bottom:6px}
+  .acq .nt{font-size:12.5px; color:var(--muted); line-height:1.45}
+
+  .scenarios{
+    margin-top:36px; display:grid; grid-template-columns:repeat(3,1fr); gap:14px;
+  }
+  .scen{
+    padding:24px; border-radius:var(--r);
+    border:1px solid var(--line); background:rgba(255,255,255,.02);
+  }
+  .scen .nm{font-size:13px; color:var(--muted); text-transform:uppercase; letter-spacing:.12em; font-weight:600; margin-bottom:10px}
+  .scen .vl{ font-family:'Instrument Serif', serif; font-size:48px; line-height:1; letter-spacing:-.02em }
+  .scen .det{font-size:13px; color:var(--muted); margin-top:6px}
+  .scen.realistic{ background:linear-gradient(180deg, rgba(255,120,73,.08), rgba(255,255,255,.02)); border-color:rgba(255,120,73,.25) }
+
+  /* ====== FAQ ====== */
+  .faq{ margin-top:50px; max-width:840px; margin-left:auto; margin-right:auto }
+  .faq-item{
+    border-bottom:1px solid var(--line); padding:20px 0;
+  }
+  .faq-q{
+    width:100%; display:flex; justify-content:space-between; align-items:center;
+    text-align:left; font-size:17px; font-weight:600;
+    padding:6px 0; color:var(--text); gap:16px;
+  }
+  .faq-q .ic{
+    width:32px;height:32px; border-radius:50%; flex-shrink:0;
+    background:rgba(255,255,255,.04); border:1px solid var(--line-strong);
+    display:grid; place-items:center; transition:transform .25s ease, background .2s;
+    font-weight:300; font-size:18px;
+  }
+  .faq-item.open .faq-q .ic{ transform:rotate(45deg); background:var(--grad); border-color:transparent; color:white }
+  .faq-a{
+    max-height:0; overflow:hidden; transition:max-height .3s ease;
+    color:var(--muted); font-size:15px; line-height:1.65;
+  }
+  .faq-item.open .faq-a{ padding-top:14px; max-height:400px }
+
+  /* ====== FINAL CTA ====== */
+  .final-cta{
+    margin:80px auto 80px;
+    padding: 80px 60px;
+    border-radius:32px;
+    background:
+      radial-gradient(800px 400px at top left, rgba(255,120,73,.18), transparent 60%),
+      radial-gradient(700px 400px at bottom right, rgba(183,98,255,.15), transparent 60%),
+      linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
+    border:1px solid rgba(255,120,73,.2);
+    text-align:center; max-width:1100px;
+    position:relative; overflow:hidden;
+  }
+  .final-cta::before{
+    content:""; position:absolute; inset:0;
+    background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60'><path d='M0 30h60M30 0v60' stroke='rgba(255,255,255,0.025)' stroke-width='1'/></svg>");
+    pointer-events:none;
+  }
+  .final-cta h2{
+    font-size:clamp(36px, 5vw, 60px); font-weight:300; letter-spacing:-.03em; line-height:1.05;
+    margin:0 0 20px; max-width:760px; margin-left:auto; margin-right:auto;
+    position:relative;
+  }
+  .final-cta h2 em{font-family:'Instrument Serif', serif; font-style:italic; font-weight:400}
+  .final-cta p{ font-size:18px; color:var(--muted); margin:0 0 32px; position:relative}
+  .final-cta .seats{
+    margin-top:32px; display:inline-flex; align-items:center; gap:14px;
+    padding:10px 18px; border-radius:999px;
+    background:rgba(0,0,0,.35); border:1px solid var(--line-strong);
+    font-size:13px; color:var(--muted);
+    position:relative;
+  }
+  .seats-bar{ width:140px; height:6px; border-radius:6px; background:rgba(255,255,255,.06); overflow:hidden}
+  .seats-bar i{ display:block; height:100%; width:32%; background:var(--grad); border-radius:6px }
+
+  /* ====== SIGNUP MODAL ====== */
+  .modal-bg{
+    position:fixed; inset:0; z-index:80;
+    background:rgba(5,7,12,.78); backdrop-filter: blur(8px);
+    display:none; align-items:center; justify-content:center;
+    padding:20px; animation: fadeIn .25s ease;
+  }
+  .modal-bg.open{display:flex}
+  @keyframes fadeIn{from{opacity:0} to{opacity:1}}
+  .modal{
+    width:100%; max-width:480px;
+    background:linear-gradient(180deg, #161922, #11131b);
+    border:1px solid var(--line-strong); border-radius:20px;
+    padding:34px 30px; position:relative;
+    animation: pop .25s ease;
+  }
+  @keyframes pop{from{transform:scale(.96); opacity:0} to{transform:scale(1); opacity:1}}
+  .modal .x{
+    position:absolute; top:14px; right:14px; width:32px; height:32px;
+    border-radius:50%; background:rgba(255,255,255,.05); display:grid; place-items:center;
+    color:var(--muted); transition:background .2s;
+  }
+  .modal .x:hover{background:rgba(255,255,255,.1); color:var(--text)}
+  .modal h3{ font-size:24px; letter-spacing:-.02em; margin:0 0 8px }
+  .modal p{ font-size:14px; color:var(--muted); margin:0 0 24px }
+  .modal label{ display:block; font-size:13px; color:var(--muted); margin-bottom:6px; font-weight:500 }
+  .modal input, .modal textarea, .modal select{
+    width:100%; padding:12px 14px;
+    background:rgba(255,255,255,.04); border:1px solid var(--line-strong);
+    border-radius:10px; color:var(--text); font-size:14.5px;
+    font-family:inherit; margin-bottom:14px; transition: border-color .2s;
+  }
+  .modal input:focus, .modal textarea:focus, .modal select:focus{ outline:none; border-color:var(--accent) }
+  .modal textarea{resize:vertical; min-height:80px}
+  .modal .submit{ width:100%; justify-content:center; margin-top:6px }
+  .modal .succ{
+    text-align:center; padding:20px 0;
+  }
+  .modal .succ .ic{
+    width:64px; height:64px; border-radius:50%; margin:0 auto 18px;
+    background:var(--grad); display:grid; place-items:center; color:white; font-size:28px;
+  }
+  .modal .succ h3{ margin-bottom:10px }
+
+  /* ====== FOOTER ====== */
+  footer{
+    border-top:1px solid var(--line);
+    padding:50px 0 30px; color:var(--muted); font-size:13.5px;
+  }
+  .foot-grid{
+    display:grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap:40px;
+    padding-bottom:40px; border-bottom:1px solid var(--line);
+  }
+  .foot-grid h5{ font-size:12px; text-transform:uppercase; letter-spacing:.12em; color:var(--text); font-weight:700; margin:0 0 14px }
+  .foot-grid ul{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px }
+  .foot-grid a:hover{color:var(--text)}
+  .foot-tag{ font-size:13.5px; color:var(--muted); margin-top:10px; max-width:340px; line-height:1.55 }
+  .foot-bottom{
+    padding-top:24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;
+  }
+
+  /* ====== RESPONSIVE ====== */
+  @media (max-width:980px){
+    .hero{padding:50px 0}
+    .hero-grid{grid-template-columns:1fr; gap:50px}
+    .phone{margin-bottom:20px}
+    .problem-grid{grid-template-columns:1fr; gap:32px}
+    .steps{grid-template-columns:1fr 1fr}
+    .features{grid-template-columns:1fr}
+    .pricing{grid-template-columns:1fr}
+    .roadmap{grid-template-columns:1fr 1fr}
+    .exit-grid{grid-template-columns:repeat(2,1fr)}
+    .scenarios{grid-template-columns:1fr}
+    .foot-grid{grid-template-columns:1fr 1fr}
+    section.s{padding:80px 0}
+    .final-cta{padding:50px 24px}
+    .nav-links{display:none}
+    .menu-toggle{display:grid; place-items:center; width:40px; height:40px; border-radius:10px; background:rgba(255,255,255,.04); border:1px solid var(--line-strong)}
+  }
+  @media (max-width:560px){
+    .steps{grid-template-columns:1fr}
+    .roadmap{grid-template-columns:1fr}
+    .exit-grid{grid-template-columns:1fr}
+    .foot-grid{grid-template-columns:1fr}
+    .losses-table .row{grid-template-columns: 1.4fr .8fr; row-gap:8px}
+    .losses-table .row .impact{grid-column:1/-1; padding-top:4px}
+    .losses-table .row.head{display:none}
+    .statsbar .num{font-size:32px}
+  }
+
+  /* === Accessibility / motion === */
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; scroll-behavior:auto !important }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============== NAV ============== -->
+<nav class="top">
+  <div class="nav-inner">
+    <a class="brand" href="#top">
+      <span class="brand-mark">O</span>
+      <span>OTTO</span>
+    </a>
+    <div class="nav-links">
+      <a href="#problem">Le problème</a>
+      <a href="#solution">Comment ça marche</a>
+      <a href="#features">Fonctionnalités</a>
+      <a href="#demo">Démo</a>
+      <a href="#pricing">Tarif</a>
+      <a href="#roadmap">Roadmap</a>
+    </div>
+    <div class="nav-cta">
+      <a class="btn btn-ghost" href="#demo">Voir la démo</a>
+      <button class="btn btn-primary" onclick="openModal()">Rejoindre les 300 →</button>
+      <button class="menu-toggle" onclick="toggleMenu()" aria-label="Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ============== HERO ============== -->
+<section id="top" class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <span class="pill"><span class="dot"></span> Recherche 300 testeurs gratuits — 96 places restantes</span>
+        <h1 class="hero-title">
+          Tu parles. <span class="b accent-grad">OTTO fait.</span><br>
+          <em>L'employé IA</em> de chaque indépendant.
+        </h1>
+        <p class="hero-sub">
+          OTTO est le premier back-office <strong style="color:var(--text)">entièrement conversationnel</strong> pour les indépendants.
+          Tu envoies un vocal, un message, un email transféré — il rédige les devis, lance les factures,
+          relance les impayés, suit ta trésorerie. Sans formulaire. Sans tableau de bord. Sans clic.
+        </p>
+        <div class="hero-ctas">
+          <button class="btn btn-primary btn-lg" onclick="openModal()">
+            Rejoindre les 300 premiers
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </button>
+          <a class="btn btn-ghost btn-lg" href="#demo">▶ Voir OTTO en action</a>
+        </div>
+        <div class="hero-meta">
+          <span><b style="color:#46d27a">●</b> Gratuit à vie pour les 300 premiers</span>
+          <span><b>14,99€/mois</b> ensuite</span>
+          <span><b>0€</b> pour démarrer</span>
+        </div>
+      </div>
+      <div class="phone-wrap">
+        <div class="float-tag t1"><span class="ico" style="background:rgba(255,120,73,.2);color:var(--accent)">📄</span> Devis en 2 min</div>
+        <div class="float-tag t2"><span class="ico" style="background:rgba(70,210,122,.18);color:#46d27a">💸</span> Facture envoyée</div>
+        <div class="float-tag t3"><span class="ico" style="background:rgba(183,98,255,.18);color:#b762ff">⏰</span> Relance auto</div>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="chat-header">
+              <div class="avatar">O</div>
+              <div class="meta">
+                <div class="name">OTTO</div>
+                <div class="status">en ligne — répond en moyenne en 6s</div>
+              </div>
+            </div>
+            <div class="chat-stream" id="heroStream">
+              <div class="bubble voice">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+                <div class="voice-bars" id="vb">
+                  <!-- bars filled by JS -->
+                </div>
+                <div class="voice-time">0:18</div>
+              </div>
+              <div class="bubble otto">Compris. Devis pour <b>Sarah Dupont</b>, mission conseil stratégie, 3 jours à 450€/jour, livraison 15 mai. Je prépare 👌</div>
+              <div class="typing"><span></span><span></span><span></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="statsbar">
+      <div class="stat"><div class="num">1,57<span style="font-size:.55em"> Md</span></div><div class="lbl">indépendants dans le monde</div></div>
+      <div class="stat"><div class="num">9-16<span style="font-size:.55em"> h/sem</span></div><div class="lbl">perdues en admin par freelance</div></div>
+      <div class="stat"><div class="num">14,99<span style="font-size:.55em"> €</span></div><div class="lbl">par mois, prix unique</div></div>
+      <div class="stat"><div class="num">2<span style="font-size:.55em"> min</span></div><div class="lbl">pour générer un devis</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== PROBLEM ============== -->
+<section id="problem" class="s">
+  <div class="wrap">
+    <span class="eyebrow">Le problème</span>
+    <h2 class="section-title">L'<em>armée invisible</em> que <span class="b">tu as perdue</span> en devenant indépendant.</h2>
+    <p class="section-lead">
+      Quand tu étais salarié, tu avais comptable, juridique, assistant commercial, RH, CRM, facturation. Tout ça coûtait
+      30 000 à 80 000€/an à ton employeur — et tu n'en étais même pas conscient.
+      Le jour où tu deviens indépendant, cette armée disparaît. Et tu dois <em>en plus</em> livrer le vrai travail.
+    </p>
+
+    <div class="problem-grid">
+      <div>
+        <div class="losses-table">
+          <div class="row head">
+            <div>Tâche admin</div>
+            <div>Temps/sem.</div>
+            <div>Impact financier</div>
+          </div>
+          <div class="row">
+            <div class="task">Rédiger des devis</div>
+            <div><span class="time">3-5h</span></div>
+            <div class="impact">Devis non envoyés = contrats perdus</div>
+          </div>
+          <div class="row">
+            <div class="task">Relancer les impayés</div>
+            <div><span class="time">1-2h</span></div>
+            <div class="impact">15-30% des factures en retard</div>
+          </div>
+          <div class="row">
+            <div class="task">Répondre aux emails</div>
+            <div><span class="time">2-4h</span></div>
+            <div class="impact">Perte de nouveaux contrats</div>
+          </div>
+          <div class="row">
+            <div class="task">Comptabilité basique</div>
+            <div><span class="time">2-3h</span></div>
+            <div class="impact">Erreurs TVA, pénalités</div>
+          </div>
+          <div class="row">
+            <div class="task">Suivi prospect & CRM</div>
+            <div><span class="time">1-2h</span></div>
+            <div class="impact">Prospects oubliés, CA perdu</div>
+          </div>
+          <div class="row total">
+            <div class="task">TOTAL</div>
+            <div><span class="time">9-16h/sem.</span></div>
+            <div class="impact">~25-40% du CA potentiel non réalisé</div>
+          </div>
+        </div>
+        <div class="problem-callout">
+          <div class="big">36%</div>
+          <div class="desc">du temps de travail consacré à des tâches non facturables — soit <b style="color:var(--text)">un jour et demi par semaine</b> non pas à créer de la valeur, mais à survivre administrativement. (étude FreshBooks 2023)</div>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-size:24px; font-weight:700; letter-spacing:-.02em; margin-top:0; line-height:1.2">Une tendance structurelle, irréversible.</h3>
+        <p style="color:var(--muted); font-size:15.5px; line-height:1.7;">
+          Le travail indépendant n'est pas une mode. C'est une <b style="color:var(--text)">transformation profonde</b> du marché du travail mondial.
+          Les entreprises externalisent. La Génération Z préfère l'autonomie au CDI. Les plateformes ont rendu le freelance accessible à tous.
+          Ce marché grandit de <b style="color:var(--text)">15 à 20% par an</b>.
+        </p>
+        <div style="display:grid;grid-template-columns:1fr 1fr; gap:14px; margin-top:24px">
+          <div style="padding:18px;border:1px solid var(--line);border-radius:14px; background:rgba(255,255,255,.02)">
+            <div style="font-family:'Instrument Serif',serif;font-size:38px;line-height:1" class="accent-grad">73M</div>
+            <div style="font-size:13px;color:var(--muted);margin-top:4px">freelancers aux USA</div>
+          </div>
+          <div style="padding:18px;border:1px solid var(--line);border-radius:14px; background:rgba(255,255,255,.02)">
+            <div style="font-family:'Instrument Serif',serif;font-size:38px;line-height:1" class="accent-grad">40M+</div>
+            <div style="font-size:13px;color:var(--muted);margin-top:4px">indépendants en Europe</div>
+          </div>
+          <div style="padding:18px;border:1px solid var(--line);border-radius:14px; background:rgba(255,255,255,.02)">
+            <div style="font-family:'Instrument Serif',serif;font-size:38px;line-height:1" class="accent-grad">1,57Md</div>
+            <div style="font-size:13px;color:var(--muted);margin-top:4px">dans le monde (OIT, 2024)</div>
+          </div>
+          <div style="padding:18px;border:1px solid var(--line);border-radius:14px; background:rgba(255,255,255,.02)">
+            <div style="font-family:'Instrument Serif',serif;font-size:38px;line-height:1" class="accent-grad">+20%</div>
+            <div style="font-size:13px;color:var(--muted);margin-top:4px">croissance par an</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== SOLUTION / HOW IT WORKS ============== -->
+<section id="solution" class="s">
+  <div class="wrap">
+    <span class="eyebrow">La solution</span>
+    <h2 class="section-title">Pas un logiciel de facturation de plus.<br><span class="b">Un employé qui fait le travail à ta place.</span></h2>
+    <p class="section-lead">
+      Les outils existants — Bonsai, HoneyBook, Indy, Freshbooks — t'aident à faire l'admin. <em>OTTO la fait pour toi.</em>
+      Tu n'ouvres pas de formulaire. Tu n'apprends pas un nouveau logiciel. Tu parles, OTTO agit.
+    </p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="num">01</div>
+        <h3>Tu envoies un vocal</h3>
+        <p>20 secondes sur WhatsApp. Pas d'app à télécharger. Pas de structure imposée. Tu parles comme à un collègue.</p>
+        <div class="preview"><span class="you">Toi —</span> "Client Dupont, mission conseil stratégie, 3 jours, 450€/jour, livraison le 15"</div>
+      </div>
+      <div class="step">
+        <div class="num">02</div>
+        <h3>OTTO comprend et agit</h3>
+        <p>Il extrait les infos, génère le devis en PDF au format pro, applique tes mentions légales, ton logo, ta signature.</p>
+        <div class="preview"><span class="you">OTTO —</span> Devis #D-0247 généré · 1 350€ HT · prêt à envoyer ✓</div>
+      </div>
+      <div class="step">
+        <div class="num">03</div>
+        <h3>Le devis part automatiquement</h3>
+        <p>Email envoyé au client avec lien de signature électronique. En moins de 2 minutes. Tu n'as rien fait.</p>
+        <div class="preview"><span class="you">OTTO —</span> Envoyé à sarah@dupont-conseil.fr · signature en attente</div>
+      </div>
+      <div class="step">
+        <div class="num">04</div>
+        <h3>OTTO relance si besoin</h3>
+        <p>Pas de réponse après 48h ? Email de relance poli, personnalisé. Encore rien après 5 jours ? Deuxième relance.</p>
+        <div class="preview"><span class="you">OTTO —</span> Relance 1 envoyée · Sarah a ouvert l'email 3 fois 👀</div>
+      </div>
+      <div class="step">
+        <div class="num">05</div>
+        <h3>Le client signe → la facture part</h3>
+        <p>OTTO génère la facture, l'envoie à réception, programme un rappel automatique si impayée sous 30 jours.</p>
+        <div class="preview"><span class="you">OTTO —</span> Devis signé ✓ · Facture #F-0089 envoyée</div>
+      </div>
+      <div class="step">
+        <div class="num">06</div>
+        <h3>Ton rapport, chaque lundi</h3>
+        <p>CA du mois, devis en attente, factures impayées, clients à ne pas oublier. 5 lignes claires, actionnables.</p>
+        <div class="preview"><span class="you">OTTO —</span> Lundi · 8 420€ encaissés · 2 devis chauds · 1 client silencieux depuis 21j</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FEATURES ============== -->
+<section id="features" class="s">
+  <div class="wrap">
+    <span class="eyebrow">Ce qu'OTTO gère</span>
+    <h2 class="section-title">Un <em>employé complet</em>, pas <span class="b">un outil de plus.</span></h2>
+    <p class="section-lead">Quatre fonctions, une seule conversation. OTTO couvre l'intégralité du back-office d'un indépendant — du premier contact jusqu'à l'analyse de rentabilité par client.</p>
+
+    <div class="features">
+      <div class="feat">
+        <div class="icon">💼</div>
+        <h3>Commercial</h3>
+        <ul>
+          <li>Devis professionnels générés par vocal ou message</li>
+          <li>Suivi des prospects et relances intelligentes</li>
+          <li>CRM léger — historique complet de chaque client</li>
+          <li>Alertes "client à ne pas oublier"</li>
+        </ul>
+      </div>
+      <div class="feat">
+        <div class="icon">📋</div>
+        <h3>Administratif</h3>
+        <ul>
+          <li>Factures automatiques dès acceptation du devis</li>
+          <li>Contrats générés par secteur et par pays</li>
+          <li>Relances impayés graduelles et professionnelles</li>
+          <li>Archivage et classement automatique des documents</li>
+        </ul>
+      </div>
+      <div class="feat">
+        <div class="icon">📊</div>
+        <h3>Financier</h3>
+        <ul>
+          <li>Tableau de bord trésorerie en temps réel</li>
+          <li>Prévision des entrées et sorties à 60 jours</li>
+          <li>Alertes charges et TVA à venir</li>
+          <li>Analyse rentabilité par client et par projet</li>
+        </ul>
+      </div>
+      <div class="feat">
+        <div class="icon">✉️</div>
+        <h3>Communication</h3>
+        <ul>
+          <li>Réponse automatique aux emails courants</li>
+          <li>Rédaction de propositions commerciales</li>
+          <li>Gestion des situations difficiles (retard, litige)</li>
+          <li>Emails de fidélisation et de relance client</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== INTERACTIVE DEMO ============== -->
+<section id="demo" class="s">
+  <div class="wrap">
+    <span class="eyebrow">Démo interactive</span>
+    <h2 class="section-title">Choisis un scénario. <span class="b">Regarde OTTO travailler.</span></h2>
+    <p class="section-lead">Aucune inscription. Clique sur un cas réel à droite — la conversation se joue devant toi, comme un vrai message WhatsApp avec ton employé IA.</p>
+
+    <div class="demo-shell">
+      <div class="demo-tabs">
+        <button class="demo-tab active">💬 Chat</button>
+        <button class="demo-tab" disabled style="opacity:.4">📄 Documents générés</button>
+        <button class="demo-tab" disabled style="opacity:.4">📈 Trésorerie</button>
+      </div>
+      <div class="demo-body">
+        <div class="demo-chat" id="demoChat">
+          <!-- filled by JS -->
+        </div>
+        <div class="demo-side">
+          <h4>Scénarios</h4>
+          <div class="scenario-list" id="scenarios">
+            <button class="scenario active" data-id="0">
+              <div class="ico">📄</div>
+              <div>
+                <div class="t">Créer un devis par vocal</div>
+                <div class="s">Mission de conseil — 3 jours, livraison fixée</div>
+              </div>
+            </button>
+            <button class="scenario" data-id="1">
+              <div class="ico">⏰</div>
+              <div>
+                <div class="t">Relancer un impayé</div>
+                <div class="s">Facture en retard de 15 jours, ton diplomate</div>
+              </div>
+            </button>
+            <button class="scenario" data-id="2">
+              <div class="ico">📊</div>
+              <div>
+                <div class="t">Rapport hebdo</div>
+                <div class="s">Mon état des lieux du lundi matin</div>
+              </div>
+            </button>
+            <button class="scenario" data-id="3">
+              <div class="ico">🤝</div>
+              <div>
+                <div class="t">Email d'un nouveau prospect</div>
+                <div class="s">OTTO qualifie et propose une réponse</div>
+              </div>
+            </button>
+            <button class="scenario" data-id="4">
+              <div class="ico">💸</div>
+              <div>
+                <div class="t">Analyse de rentabilité</div>
+                <div class="s">Quel client est rentable, lequel ne l'est pas</div>
+              </div>
+            </button>
+          </div>
+          <div class="demo-controls">
+            <button class="replay" onclick="playScenario(currentScenario)">↻ Rejouer</button>
+            <button onclick="openModal()">Tester pour de vrai →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== COMPARISON ============== -->
+<section class="s compact">
+  <div class="wrap">
+    <span class="eyebrow">Concurrence</span>
+    <h2 class="section-title">Ils t'<em>aident</em> à faire l'admin.<br><span class="b">OTTO la fait à ta place.</span></h2>
+    <p class="section-lead">Les concurrents sont nés avant l'IA conversationnelle. Leur architecture repose sur des formulaires et des clics — pivoter coûterait trop cher. OTTO est natif IA dès le jour 1.</p>
+
+    <div class="compare">
+      <table>
+        <thead>
+          <tr>
+            <th>Solution</th>
+            <th>Devis / Factures</th>
+            <th>CRM</th>
+            <th>IA conversationnelle</th>
+            <th>Vocal</th>
+            <th>Prix / mois</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Bonsai</td><td class="check">✓</td><td class="check">✓</td><td class="cross">—</td><td class="cross">—</td><td>21-66 $</td></tr>
+          <tr><td>HoneyBook</td><td class="check">✓</td><td class="check">✓</td><td class="cross">—</td><td class="cross">—</td><td>16-66 $</td></tr>
+          <tr><td>Freshbooks</td><td class="check">✓</td><td>Partiel</td><td class="cross">—</td><td class="cross">—</td><td>17-55 $</td></tr>
+          <tr><td>Indy (FR)</td><td class="check">✓</td><td class="check">✓</td><td class="cross">—</td><td class="cross">—</td><td>Gratuit / 9 €</td></tr>
+          <tr><td>QuickBooks SE</td><td class="check">✓</td><td class="check">✓</td><td class="cross">—</td><td class="cross">—</td><td>15-35 $</td></tr>
+          <tr class="otto-row">
+            <td><span class="brand-mark" style="width:24px;height:24px;font-size:13px">O</span> OTTO</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td><span class="badge-natif">Natif</span></td>
+            <td><span class="badge-natif">Natif</span></td>
+            <td><b>14,99 €</b></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:18px; font-size:13px; color:var(--muted-2); text-align:center">
+      Le positionnement prix d'OTTO est intentionnellement agressif. Les concurrents ne peuvent pas descendre sous 15€ sans désintégrer leur modèle existant.
+      C'est une fenêtre d'opportunité de <b style="color:var(--text)">18 à 36 mois</b>.
+    </p>
+  </div>
+</section>
+
+<!-- ============== PRICING ============== -->
+<section id="pricing" class="s">
+  <div class="wrap">
+    <span class="eyebrow">Tarif unique</span>
+    <h2 class="section-title">Un seul prix. <span class="b">Pas de tiers, pas de confusion.</span></h2>
+    <p class="section-lead">Moins qu'un repas au restaurant pour reprendre 10 heures par semaine et ne plus perdre d'argent sur des factures impayées.</p>
+
+    <div class="pricing">
+      <div class="price-card">
+        <div class="name">Phase 1</div>
+        <div class="amount">0<sup>€</sup></div>
+        <div class="per">pour les 300 premiers — <strong style="color:var(--text)">à vie</strong></div>
+        <ul>
+          <li>Toutes les fonctionnalités V1</li>
+          <li>Onboarding personnalisé en 10 min</li>
+          <li>Accès direct au fondateur sur Slack</li>
+          <li>Statut d'ambassadeur — ton avis pèse</li>
+          <li>1 mois bonus pour chaque ami parrainé</li>
+        </ul>
+        <button class="btn btn-ghost btn-lg" onclick="openModal()">Réclamer ma place gratuite</button>
+      </div>
+      <div class="price-card feat-card">
+        <span class="tag">À partir du 301ème</span>
+        <div class="name">OTTO Pro</div>
+        <div class="amount">14<sup>,99 €</sup></div>
+        <div class="per">par mois · sans engagement · annulable d'un message</div>
+        <ul>
+          <li>Devis & factures illimités par message ou vocal</li>
+          <li>Relances automatiques personnalisées</li>
+          <li>CRM intégré et historique client complet</li>
+          <li>Tableau de bord trésorerie & TVA</li>
+          <li>Multi-langues (FR, EN, ES, DE, PT)</li>
+          <li>Stockage illimité des documents</li>
+          <li>Réponse en moins de 10 secondes</li>
+        </ul>
+        <button class="btn btn-primary btn-lg" onclick="openModal()">Démarrer maintenant</button>
+      </div>
+    </div>
+
+    <div style="margin-top:36px; text-align:center; font-size:13.5px; color:var(--muted)">
+      <b style="color:var(--text)">Sain économiquement.</b> Stack technique : ~80 €/mois pour 300 utilisateurs payants à 4 497 € de MRR. <b style="color:var(--text)">Marge brute : 98%.</b>
+    </div>
+  </div>
+</section>
+
+<!-- ============== ROADMAP ============== -->
+<section id="roadmap" class="s">
+  <div class="wrap">
+    <span class="eyebrow">Roadmap produit</span>
+    <h2 class="section-title">De <em>survivre</em> à <span class="b">dominer.</span></h2>
+    <p class="section-lead">Un plan en quatre étapes pour passer du devis automatique à l'infrastructure complète invisible du travailleur indépendant.</p>
+
+    <div class="roadmap">
+      <div class="road-card now">
+        <div class="ver">V1</div>
+        <div class="when">Mois 1 → 3</div>
+        <h4>Survivre</h4>
+        <ul>
+          <li>Devis automatique par message / vocal</li>
+          <li>Génération facture PDF pro</li>
+          <li>Envoi automatique par email</li>
+          <li>Relances clients programmées</li>
+          <li>Dashboard "Ce qu'on te doit"</li>
+        </ul>
+      </div>
+      <div class="road-card">
+        <div class="ver">V2</div>
+        <div class="when">Mois 3 → 6</div>
+        <h4>Organiser</h4>
+        <ul>
+          <li>CRM léger — historique client complet</li>
+          <li>Suivi prospects et alertes</li>
+          <li>Dépenses et notes de frais</li>
+          <li>Rapport mensuel automatique</li>
+          <li>Multi-langues : FR, EN, ES, DE, PT</li>
+        </ul>
+      </div>
+      <div class="road-card">
+        <div class="ver">V3</div>
+        <div class="when">Mois 6 → 12</div>
+        <h4>Anticiper</h4>
+        <ul>
+          <li>Prévision trésorerie 60 jours</li>
+          <li>Alertes charges et TVA par pays</li>
+          <li>Analyse rentabilité client / projet</li>
+          <li>Génération de contrats par secteur</li>
+          <li>Intégration bancaire (open banking)</li>
+        </ul>
+      </div>
+      <div class="road-card">
+        <div class="ver">V4</div>
+        <div class="when">Année 2</div>
+        <h4>Dominer</h4>
+        <ul>
+          <li>Réponse auto aux emails clients</li>
+          <li>Propositions commerciales générées</li>
+          <li>API publique pour intégrations</li>
+          <li>App mobile native iOS / Android</li>
+          <li>Marketplace de templates sectoriels</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== EXIT STRATEGY ============== -->
+<section class="s">
+  <div class="wrap">
+    <span class="eyebrow">Vision & sortie</span>
+    <h2 class="section-title">Ce qu'OTTO devient.<br><span class="b">L'infrastructure invisible</span> de l'indépendant moderne.</h2>
+    <p class="section-lead">À terme, OTTO connaît mieux ton business que toi-même : tes clients les plus rentables, tes cycles de revenus, tes opportunités manquées. Cette accumulation de données crée un moat naturel — plus OTTO est utilisé, plus il est précieux.</p>
+
+    <div style="margin-top:50px">
+      <h3 style="font-size:14px; text-transform:uppercase; letter-spacing:.14em; color:var(--muted); font-weight:600; margin-bottom:8px">Acquéreurs stratégiques identifiés</h3>
+      <div class="exit-grid">
+        <div class="acq"><div class="nm">Intuit / QuickBooks</div><div class="nt">Leader mondial PME — cherche le segment freelance qu'il rate</div></div>
+        <div class="acq"><div class="nm">Sage Group</div><div class="nt">Très fort en Europe — produit conversationnel manquant</div></div>
+        <div class="acq"><div class="nm">Revolut Business</div><div class="nt">40M de clients — back-office IA dans l'app bancaire</div></div>
+        <div class="acq"><div class="nm">Xero</div><div class="nt">Cloud-first — recherche active d'IA à intégrer</div></div>
+        <div class="acq"><div class="nm">HubSpot</div><div class="nt">Veut le marché freelance / TPE qu'il ne perce pas</div></div>
+      </div>
+    </div>
+
+    <div style="margin-top:50px">
+      <h3 style="font-size:14px; text-transform:uppercase; letter-spacing:.14em; color:var(--muted); font-weight:600; margin-bottom:8px">Scénarios de valorisation</h3>
+      <div class="scenarios">
+        <div class="scen">
+          <div class="nm">Conservateur · An 2-3</div>
+          <div class="vl"><span class="accent-grad">4 M€</span></div>
+          <div class="det">ARR 500k€ · multiple 8x</div>
+        </div>
+        <div class="scen realistic">
+          <div class="nm">Réaliste · An 3</div>
+          <div class="vl"><span class="accent-grad">21,6 M€</span></div>
+          <div class="det">ARR 1,8M€ · multiple 12x</div>
+        </div>
+        <div class="scen">
+          <div class="nm">Ambitieux · An 4-5</div>
+          <div class="vl"><span class="accent-grad">75 M€</span></div>
+          <div class="det">ARR 5M€ · multiple 15x</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FAQ ============== -->
+<section class="s compact">
+  <div class="wrap">
+    <span class="eyebrow" style="display:block;text-align:center">Questions</span>
+    <h2 class="section-title" style="text-align:center; margin-left:auto; margin-right:auto">Tu te demandes <em>peut-être ça.</em></h2>
+    <div class="faq" id="faq">
+      <div class="faq-item">
+        <button class="faq-q">Comment OTTO comprend ce que je dis dans un vocal ?<span class="ic">+</span></button>
+        <div class="faq-a">OTTO utilise Claude (Anthropic), un des modèles de langage les plus avancés au monde. Il transcrit ton vocal, comprend le contexte (qui est le client, quel projet, quel tarif), et extrait les bonnes informations même si tu changes d'avis en cours de phrase. Si quelque chose manque, il te pose une question — comme un vrai assistant.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Et mes données ? Elles vont où ?<span class="ic">+</span></button>
+        <div class="faq-a">Toutes tes données sont stockées en Europe (Supabase, infrastructure AWS Frankfurt). Elles ne sont jamais utilisées pour entraîner des modèles. Tu peux exporter ou supprimer tout en un message à OTTO. RGPD by design.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Mes devis et factures sont-ils légalement valides ?<span class="ic">+</span></button>
+        <div class="faq-a">Oui. Les documents générés respectent les mentions légales obligatoires (FR, BE, LU, CH, ES, etc.). La signature électronique est conforme eIDAS. Les numéros sont séquentiels, datés, archivés — comme l'exige la loi.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Je peux essayer sans payer ?<span class="ic">+</span></button>
+        <div class="faq-a">Mieux que ça : les 300 premiers utilisateurs sont <b>gratuits à vie</b>. Après ça, le tarif passe à 14,99€/mois sans engagement. Pas de carte demandée pour commencer.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Quels secteurs et quels pays sont supportés ?<span class="ic">+</span></button>
+        <div class="faq-a">Tous les indépendants : consultants, designers, développeurs, coachs, photographes, artisans, thérapeutes, formateurs… France, Belgique, Luxembourg, Espagne dès le lancement. Anglais, allemand, portugais en V2 (mois 3-6).</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Et si je veux quitter OTTO ?<span class="ic">+</span></button>
+        <div class="faq-a">Tu envoies un message, OTTO exporte tout (clients, devis, factures, historique) en CSV / PDF / JSON, et désactive ton compte. Aucune friction, aucun chantage à la migration. C'est la promesse.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FINAL CTA ============== -->
+<div class="wrap">
+  <div class="final-cta">
+    <h2>Le marché est là. La technologie est là. <em>La fenêtre est ouverte.</em><br>Il ne manque qu'une chose — <span class="b accent-grad">commencer.</span></h2>
+    <p>Rejoins les 300 premiers indépendants qui n'ont plus jamais à faire leur admin.</p>
+    <button class="btn btn-primary btn-lg" onclick="openModal()" style="font-size:16px; padding:18px 30px">
+      Réclamer ma place gratuite à vie
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </button>
+    <div class="seats">
+      <span><b style="color:var(--text)">204 / 300</b> places prises</span>
+      <div class="seats-bar"><i></i></div>
+      <span>96 restantes</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============== FOOTER ============== -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="#top"><span class="brand-mark">O</span><span>OTTO</span></a>
+        <p class="foot-tag">L'employé IA conversationnel pour les 1,57 milliard d'indépendants dans le monde. Tu parles. OTTO fait.</p>
+      </div>
+      <div>
+        <h5>Produit</h5>
+        <ul>
+          <li><a href="#solution">Comment ça marche</a></li>
+          <li><a href="#features">Fonctionnalités</a></li>
+          <li><a href="#demo">Démo</a></li>
+          <li><a href="#pricing">Tarif</a></li>
+          <li><a href="#roadmap">Roadmap</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Entreprise</h5>
+        <ul>
+          <li><a href="#">À propos</a></li>
+          <li><a href="#">Build in public</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Presse</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Légal</h5>
+        <ul>
+          <li><a href="#">Mentions légales</a></li>
+          <li><a href="#">CGU</a></li>
+          <li><a href="#">Confidentialité</a></li>
+          <li><a href="#">RGPD</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2025 OTTO — Tous droits réservés. Document confidentiel.</span>
+      <span>Construit avec ❤︎ — sans une ligne de code.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============== SIGNUP MODAL ============== -->
+<div class="modal-bg" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modalInner">
+    <button class="x" onclick="closeModal()" aria-label="Fermer">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <div id="modalForm">
+      <h3>Réclamer ta place gratuite à vie 🎟️</h3>
+      <p>96 places restantes. Réponse sous 24h.</p>
+      <form onsubmit="submitForm(event)">
+        <label>Prénom</label>
+        <input type="text" required placeholder="Sarah" />
+        <label>Email</label>
+        <input type="email" required placeholder="sarah@dupont-conseil.fr" />
+        <label>Tu es…</label>
+        <select required>
+          <option value="">Choisis ton activité</option>
+          <option>Consultant·e</option>
+          <option>Designer / Créatif·ve</option>
+          <option>Développeur·euse</option>
+          <option>Coach / Formateur·rice</option>
+          <option>Photographe / Vidéaste</option>
+          <option>Artisan·e</option>
+          <option>Thérapeute</option>
+          <option>Autre</option>
+        </select>
+        <label>Qu'est-ce qui te bouffe le plus de temps en admin ? <span style="color:var(--muted-2)">(optionnel)</span></label>
+        <textarea placeholder="Les relances impayés, les devis qui traînent…"></textarea>
+        <button type="submit" class="btn btn-primary submit btn-lg">Rejoindre les 300 premiers →</button>
+        <p style="font-size:12px; color:var(--muted-2); margin-top:14px; text-align:center; line-height:1.5">
+          On ne spam pas. On ne vend rien à personne. Tu peux te désinscrire d'un message à OTTO.
+        </p>
+      </form>
+    </div>
+    <div id="modalSuccess" style="display:none">
+      <div class="succ">
+        <div class="ic">✓</div>
+        <h3>Bienvenue dans la team OTTO.</h3>
+        <p>On revient vers toi sous 24h avec ton accès. En attendant, raconte-nous ton plus gros casse-tête admin actuel — on l'utilisera comme premier scénario de démo personnel.</p>
+        <button class="btn btn-ghost btn-lg" onclick="closeModal()" style="margin-top:18px">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============== Voice bars ============== */
+(function buildVoiceBars(){
+  const v = document.getElementById('vb');
+  if(!v) return;
+  const heights = [4,9,14,19,12,7,11,17,21,8,4,12,18,22,10,6,9,15,20,11,5,9,14,19,8];
+  heights.forEach(h=>{
+    const s = document.createElement('span');
+    s.style.height = h+'px';
+    v.appendChild(s);
+  });
+})();
+
+/* ============== Mobile menu ============== */
+function toggleMenu(){
+  const nl = document.querySelector('.nav-links');
+  if(!nl) return;
+  if(nl.style.display === 'flex'){
+    nl.style.display='none';
+  } else {
+    nl.style.display='flex';
+    nl.style.position='absolute';
+    nl.style.top='60px';
+    nl.style.right='20px';
+    nl.style.flexDirection='column';
+    nl.style.padding='16px 20px';
+    nl.style.background='rgba(20,23,31,.96)';
+    nl.style.border='1px solid var(--line-strong)';
+    nl.style.borderRadius='14px';
+    nl.style.gap='14px';
+  }
+}
+
+/* ============== Modal ============== */
+function openModal(){
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow='';
+  setTimeout(()=>{
+    document.getElementById('modalForm').style.display='block';
+    document.getElementById('modalSuccess').style.display='none';
+  },200);
+}
+function submitForm(e){
+  e.preventDefault();
+  document.getElementById('modalForm').style.display='none';
+  document.getElementById('modalSuccess').style.display='block';
+}
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
+/* ============== FAQ accordion ============== */
+document.querySelectorAll('#faq .faq-q').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const item = btn.parentElement;
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('#faq .faq-item').forEach(i=>i.classList.remove('open'));
+    if(!wasOpen) item.classList.add('open');
+  });
+});
+
+/* ============== Interactive demo ============== */
+const SCENARIOS = [
+  // 0 — devis
+  [
+    {t:'voice', who:'me', sec:'0:18'},
+    {t:'text', who:'me', text:'(transcription) Hey OTTO, je viens d\'avoir Sarah Dupont au tel. Mission conseil stratégie B2B sur 3 jours, 450€/jour, livraison fixée le 15 mai. Tu fais le devis stp 🙏', delay:300},
+    {t:'typing', delay:600},
+    {t:'text', who:'otto', text:'Bien reçu. Je prépare le devis :\n\n• Client : <b>Sarah Dupont — Dupont Conseil</b>\n• Mission : Conseil stratégie B2B\n• <b>3 jours × 450€ = 1 350 € HT</b>\n• Livraison : 15 mai\n\nMentions légales OK ? J\'ajoute la TVA à 20 % par défaut ?', delay:900},
+    {t:'text', who:'me', text:'oui parfait, et ajoute mes CGV', delay:1100},
+    {t:'typing', delay:600},
+    {t:'text', who:'otto', text:'✓ Devis #D-0247 généré (PDF, 2 pages, logo + CGV)\n✓ Envoyé à <b>sarah@dupont-conseil.fr</b>\n✓ Lien de signature électronique inclus\n\nJe relance dans 48h si pas de réponse 👍', delay:1100, doc:true},
+  ],
+  // 1 — relance impayé
+  [
+    {t:'text', who:'me', text:'OTTO la facture #F-0089 de Marc Lefèvre est en retard depuis 15 jours, t\'as fait quoi ?'},
+    {t:'typing', delay:600},
+    {t:'text', who:'otto', text:'Oui je suivais. Voilà le statut :\n\n• Facture <b>1 800 € HT</b>, échue le 10 avril\n• Email de rappel doux envoyé J+3 — ouvert 2 fois, pas de réponse\n• Email plus ferme envoyé J+10 — ouvert, pas de réponse\n\nProchaine étape recommandée : <b>relance avec mention de pénalités contractuelles</b>. Tu veux que je l\'envoie ?', delay:1100},
+    {t:'text', who:'me', text:'oui mais reste poli', delay:900},
+    {t:'typing', delay:500},
+    {t:'text', who:'otto', text:'Préparé. Ton :\n<i>"Bonjour Marc, je me permets de revenir vers vous au sujet de la facture #F-0089 (1 800€) échue depuis 15 jours. Sans nouvelles d\'ici la fin de semaine, des pénalités de retard pourraient s\'appliquer conformément à nos CGV. Une difficulté particulière ? Restons à l\'écoute."</i>\n\nJ\'envoie ?', delay:1100},
+    {t:'text', who:'me', text:'go', delay:600},
+    {t:'text', who:'otto', text:'✓ Envoyé · Marc a 7 jours pour réagir avant escalade juridique automatique', delay:600},
+  ],
+  // 2 — rapport hebdo
+  [
+    {t:'text', who:'me', text:'Mon point du lundi stp'},
+    {t:'typing', delay:600},
+    {t:'text', who:'otto', text:'<b>📊 Lundi 21 avril — ton tableau de bord</b>\n\n💸 <b>Encaissé ce mois</b> : 8 420 € (+12% vs mars)\n📥 <b>À venir 30j</b> : 4 600 €\n⏳ <b>Devis chauds</b> : 3 (Dupont, Vidal, Aliz Conseil)\n🚨 <b>Factures en retard</b> : 1 (Marc Lefèvre — relance 2 envoyée)\n👋 <b>Clients silencieux</b> : Bertrand, 21 jours sans contact\n\n<b>Mon conseil</b> : un message à Bertrand cette semaine, c\'était ton meilleur client en 2024.', delay:1200},
+    {t:'text', who:'me', text:'rappelle-moi de lui écrire mardi à 10h', delay:900},
+    {t:'text', who:'otto', text:'✓ Noté. Mardi 10h je te lance un message avec un brouillon prêt 👌', delay:600},
+  ],
+  // 3 — qualifier prospect
+  [
+    {t:'text', who:'me', text:'(email transféré) "Bonjour, je suis Léa, j\'ai vu votre site, j\'aurais besoin d\'aide pour structurer mon offre B2B. Pouvez-vous me rappeler ?"'},
+    {t:'typing', delay:700},
+    {t:'text', who:'otto', text:'Beau prospect. Je l\'ai analysé :\n\n• <b>Léa Charpentier</b> — fondatrice, secteur SaaS RH (LinkedIn vérifié)\n• Boîte 8 personnes, levée seed 1,2M€ en 2024\n• Fit avec ton offre <b>"Structuration commerciale B2B"</b>\n\nJe te suggère cette réponse :\n<i>"Bonjour Léa, merci pour votre message. J\'aide souvent des fondatrices SaaS dans cette phase. Disponibilité jeudi 14h ou vendredi 10h pour 30 min de découverte ? Je vous envoie aussi un cas similaire en PJ."</i>\n\nJ\'envoie + j\'ajoute en pipeline ?', delay:1300},
+    {t:'text', who:'me', text:'parfait envoie et bloque jeudi 14h', delay:900},
+    {t:'text', who:'otto', text:'✓ Envoyé · ✓ Léa ajoutée au CRM (statut: Découverte) · ✓ Créneau jeudi 14h bloqué', delay:600},
+  ],
+  // 4 — analyse rentabilité
+  [
+    {t:'text', who:'me', text:'qui sont mes clients les plus rentables ce trimestre ?'},
+    {t:'typing', delay:600},
+    {t:'text', who:'otto', text:'J\'ai croisé tes 12 missions livrées au Q1. Voici ton top 3 :\n\n🥇 <b>Aliz Conseil</b> — 4 200€ pour 6h de travail = <b>700€/h</b>\n🥈 <b>Dupont Conseil</b> — 3 600€ pour 9h = <b>400€/h</b>\n🥉 <b>BetaTech</b> — 2 800€ pour 8h = <b>350€/h</b>\n\n⚠️ <b>À surveiller</b> : Lefèvre = 95€/h réels (vs 280€/h facturés). Tu y as passé 3× plus de temps que prévu.', delay:1200},
+    {t:'text', who:'me', text:'merci, tu peux me préparer une proposition de revalorisation pour Lefèvre ?', delay:1000},
+    {t:'text', who:'otto', text:'✓ Brouillon prêt. Je t\'envoie la proposition par email pour validation avant l\'envoi à Marc 👌', delay:600},
+  ],
+];
+
+let currentScenario = 0;
+let demoTimer = null;
+
+function escapeText(s){ return s.replace(/<br>/g,'\n').replace(/\n/g,'<br>'); }
+
+function makeDocCard(){
+  const d = document.createElement('div');
+  d.className = 'doc-card';
+  d.style.marginTop = '10px';
+  d.innerHTML = `
+    <div class="doc-icon">PDF</div>
+    <div class="info">
+      <div class="t">Devis_D-0247_Dupont.pdf</div>
+      <div class="s">2 pages · 1 350€ HT · prêt à signer</div>
+    </div>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9aa0ab" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+  `;
+  return d;
+}
+
+function appendBubble(stream, msg){
+  if(msg.t === 'voice'){
+    const el = document.createElement('div');
+    el.className = 'd-bubble me';
+    el.style.display='flex'; el.style.alignItems='center'; el.style.gap='10px';
+    el.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+      <div style="display:flex;gap:2px;align-items:center;flex:1">
+      ${[5,11,16,20,14,8,12,18,22,9,5,12,18,21,11].map(h=>`<span style="width:2px;height:${h}px;background:rgba(255,255,255,.85);border-radius:2px;display:inline-block"></span>`).join('')}
+      </div>
+      <span style="font-size:11px;opacity:.85">${msg.sec}</span>`;
+    stream.appendChild(el);
+    return;
+  }
+  if(msg.t === 'typing'){
+    const el = document.createElement('div');
+    el.className = 'typing';
+    el.innerHTML = '<span></span><span></span><span></span>';
+    el.dataset.typing='1';
+    stream.appendChild(el);
+    return;
+  }
+  // text
+  const el = document.createElement('div');
+  el.className = 'd-bubble ' + (msg.who === 'me' ? 'me' : 'otto');
+  el.innerHTML = escapeText(msg.text);
+  stream.appendChild(el);
+  if(msg.doc){ stream.appendChild(makeDocCard()); }
+}
+
+function clearTyping(stream){
+  stream.querySelectorAll('[data-typing]').forEach(t => t.remove());
+}
+
+function playScenario(idx){
+  if(demoTimer) clearTimeout(demoTimer);
+  const stream = document.getElementById('demoChat');
+  stream.innerHTML = '';
+  currentScenario = idx;
+  document.querySelectorAll('.scenario').forEach(s => s.classList.toggle('active', +s.dataset.id === idx));
+  const sc = SCENARIOS[idx];
+  let i = 0;
+  function next(){
+    if(i >= sc.length) return;
+    const msg = sc[i];
+    if(msg.t !== 'typing') clearTyping(stream);
+    appendBubble(stream, msg);
+    stream.scrollTop = stream.scrollHeight;
+    i++;
+    if(i < sc.length){
+      demoTimer = setTimeout(next, msg.delay || 700);
+    } else {
+      // remove trailing typing if any
+      setTimeout(()=>clearTyping(stream), 400);
+    }
+  }
+  next();
+}
+
+document.querySelectorAll('.scenario').forEach(s => {
+  s.addEventListener('click', () => playScenario(+s.dataset.id));
+});
+
+// Auto-start demo when in viewport
+const demoSection = document.getElementById('demo');
+let demoStarted = false;
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting && !demoStarted){
+      demoStarted = true;
+      playScenario(0);
+    }
+  });
+}, {threshold:.3});
+io.observe(demoSection);
+
+/* ============== Hero looping mini-chat ============== */
+(function heroLoop(){
+  const stream = document.getElementById('heroStream');
+  if(!stream) return;
+  const looped = [
+    {after:1800, fn:()=>{
+      const t = stream.querySelector('.typing'); if(t) t.remove();
+      const b = document.createElement('div');
+      b.className = 'bubble otto';
+      b.innerHTML = '✓ <b>Devis #D-0247</b> · 1 350€ HT<br>Envoyé à sarah@dupont-conseil.fr';
+      stream.appendChild(b);
+    }},
+    {after:2400, fn:()=>{
+      const d = document.createElement('div');
+      d.className = 'doc-card';
+      d.innerHTML = `
+        <div class="doc-icon">PDF</div>
+        <div class="info">
+          <div class="t">Devis_D-0247.pdf</div>
+          <div class="s">2 pages · prêt à signer</div>
+        </div>`;
+      stream.appendChild(d);
+      stream.scrollTop = stream.scrollHeight;
+    }},
+  ];
+  let cum=0;
+  looped.forEach(({after,fn}) => { cum += after; setTimeout(fn, cum); });
+})();
+</script>
+
+</body>
+</html>
